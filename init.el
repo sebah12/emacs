@@ -20,7 +20,10 @@
     flycheck
     material-theme
     py-autopep8
-    which-key))
+    which-key
+    yasnippet
+    yasnippet-snippets
+    projectile))
 
 
 (mapc #'(lambda (package)
@@ -42,11 +45,21 @@
 (which-key-mode)	    ; enable which-key
 (which-key-setup-side-window-bottom)	; set which-key on bottom window
 
+;; YASNIPPET
+;; (require 'yasnippet)
+(yas-global-mode 1)			;enable global mode
+
+;; PROJECTILE
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+
 ;; key-bindings
 ;; --------------------------------------
 (global-set-key (kbd "C-x g") 'magit-status) ; magit 
 
-;; python CONFIGURATION
+;; PYTHON CONFIGURATION
 ;; --------------------------------------
 
 (elpy-enable)
@@ -75,3 +88,17 @@
 
 ;; init.el ends here
 ;; --------------------------------------
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (projectile which-key py-autopep8 material-theme magit flycheck elpy ein better-defaults))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
