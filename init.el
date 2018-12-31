@@ -23,7 +23,8 @@
     which-key
     yasnippet
     yasnippet-snippets
-    projectile))
+    projectile
+    crux))
 
 
 (mapc #'(lambda (package)
@@ -57,9 +58,10 @@
 
 ;; key-bindings
 ;; --------------------------------------
-(global-set-key (kbd "C-x g") 'magit-status) ; magit 
+(global-set-key (kbd "C-x g") 'magit-status) ; magit
+(global-set-key (kbd "C-c o") #'crux-open-with) ; open with external application
 
-;; PYTHON CONFIGURATION
+;; python CONFIGURATION
 ;; --------------------------------------
 
 (elpy-enable)
