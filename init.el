@@ -1,7 +1,10 @@
 ;; init.el --- Emacs configuration
 
+(add-to-list 'load-path "~/.emacs.d/personal")
+
+;; ------------------------------------------------------------
 ;; INSTALL PACKAGES
-;; --------------------------------------
+;; ------------------------------------------------------------
 
 (require 'package)
 
@@ -33,8 +36,9 @@
       (package-install package)))
       myPackages)
 
+;; ------------------------------------------------------------
 ;; BASIC CUSTOMIZATION
-;; --------------------------------------
+;; ------------------------------------------------------------
 
 (setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'material t) ;; load material theme
@@ -47,23 +51,54 @@
 (which-key-mode)	    ; enable which-key
 (which-key-setup-side-window-bottom)	; set which-key on bottom window
 
+;; ------------------------------------------------------------
+;; ORG MODE
+;; ------------------------------------------------------------
+(setq org-log-done 'time)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c b") 'org-iswitchb)
+
+;; Agenda files
+(setq org-agenda-files '("~/org/agenda"))
+
+;; TODO dependencies
+(add-hook 'org-mode-hook 'org-enforce-todo-dependencies)
+
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise"
+  (let (org-log-done org-log-states)    ;turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
+;; TODO faces
+(setq org-todo-keyword-faces
+      '(("TODO" . org-warning) ("STARTED" . "yellow")
+        ("CANCELLED" . (:foreground "orange" :weight bold))))
+
+;; ------------------------------------------------------------
 ;; YASNIPPET
+;; ------------------------------------------------------------
 ;; (require 'yasnippet)
 (yas-global-mode 1)			;enable global mode
 
+;; ------------------------------------------------------------
 ;; PROJECTILE
+;; ------------------------------------------------------------
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-
+;; ------------------------------------------------------------
 ;; key-bindings
-;; --------------------------------------
+;; ------------------------------------------------------------
 (global-set-key (kbd "C-x g") 'magit-status) ; magit
 (global-set-key (kbd "C-c o") #'crux-open-with) ; open with external application
 
+;; ------------------------------------------------------------
 ;; python CONFIGURATION
-;; --------------------------------------
+;; ------------------------------------------------------------
 
 (elpy-enable)
 
@@ -93,8 +128,9 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
+;; ------------------------------------------------------------
 ;; OCTAVE CONFIGURATION
-;; --------------------------------------
+;; ------------------------------------------------------------
 
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -107,7 +143,7 @@
                 (font-lock-mode 1))))
 
 ;; init.el ends here
-;; --------------------------------------
+;; ------------------------------------------------------------
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
