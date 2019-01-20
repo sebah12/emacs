@@ -24,6 +24,7 @@
     yasnippet
     yasnippet-snippets
     projectile
+    speedbar
     crux))
 
 
@@ -87,6 +88,23 @@
 ;; enable autopep8 formatting on save
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;; indentation
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; OCTAVE CONFIGURATION
+;; --------------------------------------
+
+(setq auto-mode-alist
+      (cons '("\\.m$" . octave-mode) auto-mode-alist))
+
+(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
 
 ;; init.el ends here
 ;; --------------------------------------
