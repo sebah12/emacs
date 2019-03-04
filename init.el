@@ -28,7 +28,8 @@
     yasnippet-snippets
     projectile
     speedbar
-    crux))
+    crux
+    auctex))
 
 
 (mapc #'(lambda (package)
