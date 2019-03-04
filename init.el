@@ -25,7 +25,8 @@
     yasnippet-snippets
     projectile
     speedbar
-    crux))
+    crux
+    auctex))
 
 
 (mapc #'(lambda (package)
@@ -46,6 +47,10 @@
 (global-auto-revert-mode t) ; refresh buffer when changed by other source
 (which-key-mode)	    ; enable which-key
 (which-key-setup-side-window-bottom)	; set which-key on bottom window
+
+;; LATEX PATHS
+;; ----------------------------------------
+;; (add-to-list 'exec-path "/Library/TeX/texbin/")
 
 ;; YASNIPPET
 ;; (require 'yasnippet)
