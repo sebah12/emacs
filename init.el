@@ -29,7 +29,8 @@
     projectile
     speedbar
     crux
-    auctex))
+    auctex
+    org-journal))
 
 
 (mapc #'(lambda (package)
@@ -110,6 +111,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                                    (org-agenda-skip-if nil '(scheduled deadline))))
                     (org-agenda-overriding-header "ALL normal priority tasks:")))))))
 
+;; org-journal
+(customize-set-variable 'org-journal-dir "~/Dropbox/org/journal/")
+
 ;; ------------------------------------------------------------
 ;; YASNIPPET
 ;; ------------------------------------------------------------
@@ -176,4 +180,3 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                 (font-lock-mode 1))))
 
 ;; init.el ends here
-;; ------------------------------------------------------------
