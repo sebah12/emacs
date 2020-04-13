@@ -119,6 +119,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 ;; ------------------------------------------------------------
 ;; (require 'yasnippet)
 (yas-global-mode 1)			;enable global mode
+(setq yas/triggers-in-field t); Enable nested triggering of snippets
 
 ;; ------------------------------------------------------------
 ;; PROJECTILE
@@ -179,4 +180,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
             (if (eq window-system 'x)
                 (font-lock-mode 1))))
 
+;; ------------------------------------------------------------
+;; C CONFIGURATION
+;; ------------------------------------------------------------
+
+ (setq-default c-basic-offset 4)
 ;; init.el ends here
