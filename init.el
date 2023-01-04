@@ -8,8 +8,14 @@
 
 (require 'package)
 
-(add-to-list 'package-archives
-       '("melpa" . "http://melpa.org/packages/") t)
+;; (add-to-list 'package-archives
+;;              '(("melpa" . "http://melpa.org/packages/")
+;;                ("marmalade" . "http://marmalade-repo.org/packages/")
+;;                ("gnu" . "http://elpa.gnu.org/packages/")))
+
+(setq package-archives
+      '(("melpa" . "http://melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -30,7 +36,9 @@
     speedbar
     crux
     auctex
-    org-journal))
+    helm
+    org-journal
+    ))
 
 
 (mapc #'(lambda (package)
@@ -52,6 +60,7 @@
 (global-auto-revert-mode t) ; refresh buffer when changed by other source
 (which-key-mode)	    ; enable which-key
 (which-key-setup-side-window-bottom)	; set which-key on bottom window
+(global-set-key (kbd "M-i") 'imenu)     ; bind Imenu to M-i
 
 ;; ------------------------------------------------------------
 ;; ORG MODE
@@ -186,3 +195,16 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
  (setq-default c-basic-offset 4)
 ;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(helm ## helm-ebdb yasnippet-snippets which-key py-autopep8 projectile openwith material-theme magit flycheck elpy ein crux better-defaults auctex)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
