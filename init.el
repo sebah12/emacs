@@ -8,11 +8,6 @@
 
 (require 'package)
 
-;; (add-to-list 'package-archives
-;;              '(("melpa" . "http://melpa.org/packages/")
-;;                ("marmalade" . "http://marmalade-repo.org/packages/")
-;;                ("gnu" . "http://elpa.gnu.org/packages/")))
-
 (setq package-archives
       '(("melpa" . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")))
@@ -20,7 +15,6 @@
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
-
 
 (defvar myPackages
   '(better-defaults
@@ -39,7 +33,6 @@
     helm
     org-journal
     ))
-
 
 (mapc #'(lambda (package)
     (unless (package-installed-p package)
