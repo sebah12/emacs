@@ -5,39 +5,31 @@
 ;; ------------------------------------------------------------
 ;; INSTALL PACKAGES
 ;; ------------------------------------------------------------
-
 (require 'package)
 
-(setq package-archives
-      '(("melpa" . "http://melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
-(when (not package-archive-contents)
+(unless package-archive-contents
   (package-refresh-contents))
 
-(defvar myPackages
-  '(better-defaults
-    ein
-    elpy
-    flycheck
-    material-theme
-    py-autopep8
-    which-key
-    yasnippet
-    yasnippet-snippets
-    projectile
-    speedbar
-    crux
-    auctex
-    helm
-    org-journal
-    ))
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
-(mapc #'(lambda (package)
-    (unless (package-installed-p package)
-      (package-install package)))
-      myPackages)
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+(use-package auto-package-update
+  :custom
+  (auto-package-update-interval 7)
+  (auto-package-update-prompt-before-update t)
+  (auto-package-update-hide-results t)
+  :config
+  (auto-package-update-maybe)
+  (auto-package-update-at-time "09:00"))
 
 ;; ------------------------------------------------------------
 ;; BASIC CUSTOMIZATION
@@ -45,15 +37,45 @@
 
 (setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'material t) ;; load material theme
-(global-linum-mode t) ;; enable line numbers globally
+(global-display-line-numbers-mode t) ;; enable line numbers globally
 (tool-bar-mode -1)    ;; disable toolbar
 (menu-bar-mode -1)    ;; disable menubar
-(setq column-number-mode t)				     ;; show column number
+(setq column-number-mode t) ;; show column number
 (add-to-list 'initial-frame-alist '(fullscreen . maximized)) ;; maximize frame at startup
 (global-auto-revert-mode t) ; refresh buffer when changed by other source
-(which-key-mode)	    ; enable which-key
-(which-key-setup-side-window-bottom)	; set which-key on bottom window
 (global-set-key (kbd "M-i") 'imenu)     ; bind Imenu to M-i
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Install and unse doom packages
+(use-package doom-themes
+  ;; :init (load-theme 'doom-tokyo-night t)
+  )
+
+(use-package all-the-icons
+   :if (display-graphic-p))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
+
+;; Use wich-key package
+(use-package which-key
+  :defer 0
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 1))
+
+;; ;; Rainbow delimiters
+;; (use-package rainbow-delimiters
+;;   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; ------------------------------------------------------------
 ;; ORG MODE
@@ -63,11 +85,74 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
+
+(defun efs/org-font-setup ()
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  ;; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    ;; (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+    )
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)
+  )
+
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
+(use-package org
+  :pin org
+  :commands (org-capture org-agenda)
+  :hook (org-mode . efs/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾")
+  
+;; Change asterisks for bullets
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+;; Center org-mode buffers horizontally
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+
+;; Run font set
+(efs/org-font-setup))
+
 ;; Agenda files
 (setq org-agenda-files '("~/Dropbox/org/agenda/"))
 
 ;; TODO dependencies
-(add-hook 'org-mode-hook 'org-enforce-todo-dependencies)
+;; (add-hook 'org-mode-hook 'org-enforce-todo-dependencies)
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise"
@@ -140,47 +225,47 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 ;; python CONFIGURATION
 ;; ------------------------------------------------------------
 
-(elpy-enable)
+;; (elpy-enable)
 
-(setq elpy-rpc-python-command "python3")
+;; (setq elpy-rpc-python-command "python3")
 
-;; use Jupyter console for interactive python
-;; (setq python-shell-interpreter "jupyter"
-;;       python-shell-interpreter-args "console --simple-prompt"
-;;       python-shell-prompt-detect-failure-warning nil)
-;; (add-to-list 'python-shell-completion-native-disabled-interpreters
-;;              "jupyter")
+;; ;; use Jupyter console for interactive python
+;; ;; (setq python-shell-interpreter "jupyter"
+;; ;;       python-shell-interpreter-args "console --simple-prompt"
+;; ;;       python-shell-prompt-detect-failure-warning nil)
+;; ;; (add-to-list 'python-shell-completion-native-disabled-interpreters
+;; ;;              "jupyter")
 
-;; use  the python standard interpreter
-(setq python-shell-interpreter "python3"
-      python-shell-interpreter-args "-i")
+;; ;; use  the python standard interpreter
+;; (setq python-shell-interpreter "python3"
+;;       python-shell-interpreter-args "-i")
 
-;; use flycheck not flymake with elpy
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; ;; use flycheck not flymake with elpy
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-;; enable autopep8 formatting on save
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+;; ;; enable autopep8 formatting on save
+;; (require 'py-autopep8)
+;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;; indentation
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+;; ;; indentation
+;; (setq-default indent-tabs-mode nil)
+;; (setq-default tab-width 4)
 
 ;; ------------------------------------------------------------
 ;; OCTAVE CONFIGURATION
 ;; ------------------------------------------------------------
 
-(setq auto-mode-alist
-      (cons '("\\.m$" . octave-mode) auto-mode-alist))
+;; (setq auto-mode-alist
+;;       (cons '("\\.m$" . octave-mode) auto-mode-alist))
 
-(add-hook 'octave-mode-hook
-          (lambda ()
-            (abbrev-mode 1)
-            (auto-fill-mode 1)
-            (if (eq window-system 'x)
-                (font-lock-mode 1))))
+;; (add-hook 'octave-mode-hook
+;;           (lambda ()
+;;             (abbrev-mode 1)
+;;             (auto-fill-mode 1)
+;;             (if (eq window-system 'x)
+;;                 (font-lock-mode 1))))
 
 ;; ------------------------------------------------------------
 ;; C CONFIGURATION
@@ -188,16 +273,3 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
  (setq-default c-basic-offset 4)
 ;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(helm ## helm-ebdb yasnippet-snippets which-key py-autopep8 projectile openwith material-theme magit flycheck elpy ein crux better-defaults auctex)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
