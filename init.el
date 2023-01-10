@@ -118,23 +118,29 @@
   :config
   (setq org-ellipsis " ▾")
 
-;; Change asterisks for bullets
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  ;; The following lines are always needed.  Choose your own keys.
+  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
 
-;; Center org-mode buffers horizontally
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+  ;; Change asterisks for bullets
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+  ;; Center org-mode buffers horizontally
+  (defun efs/org-mode-visual-fill ()
+    (setq visual-fill-column-width 100
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1))
 
-;; Run font set
-(efs/org-font-setup))
+  (use-package visual-fill-column
+    :hook (org-mode . efs/org-mode-visual-fill))
+
+  ;; Run font set
+  (efs/org-font-setup))
 
 ;; Agenda files
 (setq org-agenda-files '("~/Dropbox/org/agenda/"))
@@ -158,7 +164,7 @@
 (defun air-org-skip-subtree-if-priority (priority)
   "Skip an agenda subtree if it has a priority of PRIORITY.
 
-PRIORITY may be one of the characters ?A, ?B, or ?C."
+  PRIORITY may be one of the characters ?A, ?B, or ?C."
   (let ((subtree-end (save-excursion (org-end-of-subtree t)))
         (pri-value (* 1000 (- org-lowest-priority priority)))
         (pri-current (org-get-priority (thing-at-point 'line t))))
