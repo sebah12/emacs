@@ -223,3 +223,22 @@
 
 (use-package magit
   :commands magit-status)
+
+;; Set $DICPATH to "$HOME/Library/Spelling" for hunspell.
+(cond
+ ((string-equal system-type "darwin") 	;Check macOS
+  (progn
+    (setenv
+     "DICPATH"
+     (concat (getenv "HOME") "/Library/Spelling"))
+    (setenv "DICTIONARY" "en_US")
+    ;; Tell ispell-mode to use hunspell.
+    (setq
+     ispell-program-name
+     "/usr/local/bin/hunspell"))))
+
+(use-package exec-path-from-shell)
+  (when (memq window-system '(mac ns x))
+    ;; (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+      ;; (add-to-list 'exec-path-from-shell-variables var))
+    (exec-path-from-shell-initialize))

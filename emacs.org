@@ -322,9 +322,54 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
 * Development
 
 ** Magit
+
 #+begin_src emacs-lisp
 
   (use-package magit
     :commands magit-status)
   
 #+end_src
+
+* macOS
+
+** Ispell
+
+In macOS I had to install Hunspell to make it work from Homebrew
+Then download the dictionary file from [[https://cgit.freedesktop.org/libreoffice/dictionaries/tree/en][here]]
+
+#+begin_src emacs-lisp
+
+  ;; Set $DICPATH to "$HOME/Library/Spelling" for hunspell.
+  (cond
+   ((string-equal system-type "darwin") 	;Check macOS
+    (progn
+      (setenv
+       "DICPATH"
+       (concat (getenv "HOME") "/Library/Spelling"))
+      (setenv "DICTIONARY" "en_US")
+      ;; Tell ispell-mode to use hunspell.
+      (setq
+       ispell-program-name
+       "/usr/local/bin/hunspell"))))
+
+#+end_src
+
+** exec-path-from-shell
+
+Ever find that a command works in your shell, but not in Emacs?
+
+This happens a lot on OS X, where an Emacs instance launched as a GUI app inherits a default minimal set of environment variables that are probably not the ones you see in a terminal window. Similarly, if you start Emacs as a daemon from systemd or launchd, it will run with a default set of environment variables.
+
+This library solves this problem by copying important environment variables from the user's shell: it works by asking your shell to print out the variables of interest, then copying them into the Emacs environment.
+
+#+begin_src emacs-lisp
+
+  (use-package exec-path-from-shell)
+    (when (memq window-system '(mac ns x))
+      ;; (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+        ;; (add-to-list 'exec-path-from-shell-variables var))
+      (exec-path-from-shell-initialize))
+  
+#+end_src
+
+
