@@ -124,6 +124,11 @@
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
 
+  ;; Agenda log mode
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
   ;; Change asterisks for bullets
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
