@@ -39,6 +39,7 @@
 (tool-bar-mode -1)    ;; disable toolbar
 (menu-bar-mode -1)    ;; disable menubar
 (setq column-number-mode t) ;; show column number
+(setq calendar-date-style "iso")			     ;; set iso format for dates
 (add-to-list 'initial-frame-alist '(fullscreen . maximized)) ;; maximize frame at startup
 (global-auto-revert-mode t) ; refresh buffer when changed by other source
 
@@ -198,7 +199,12 @@
                     (org-agenda-overriding-header "ALL normal priority tasks:")))))))
 
 ;; org-journal
-(customize-set-variable 'org-journal-dir "~/Dropbox/org/journal/")
+(use-package org-journal
+:ensure t
+:defer t
+:custom
+  (org-journal-dir "~/Dropbox/org/journal/")
+  (org-journal-date-format "%A, %Y-%m-%d"))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
