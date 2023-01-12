@@ -284,7 +284,7 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
     :defer t
     :custom
       (org-journal-dir "~/Dropbox/org/journal/")
-      (org-journal-date-format "%A, %Y-%m-%d"))
+      (org-journal-date-format "%A, %Y/%m/%d"))
 
 #+end_src
 

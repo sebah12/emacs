@@ -204,7 +204,7 @@
 :defer t
 :custom
   (org-journal-dir "~/Dropbox/org/journal/")
-  (org-journal-date-format "%A, %Y-%m-%d"))
+  (org-journal-date-format "%A, %Y/%m/%d"))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
