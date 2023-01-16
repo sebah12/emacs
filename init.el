@@ -57,6 +57,8 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-cj" 'org-journal-new-entry)
+
 
 ;; Install doom packages
 (use-package doom-themes
@@ -241,6 +243,9 @@
     ;; Dynamic scoping to the rescue
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))
+
+;; Set global key
+(define-key global-map (kbd "C-c k") (lambda () (interactive) (org-capture nil)))
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 
