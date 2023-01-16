@@ -218,7 +218,7 @@
       ("td" "Task DEADLINE" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
            "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
       ("te" "Event" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Events")
-           "* TODO %? \nSCHEDULED:% ^T\n%U" :empty-lines 1)))
+           "* TODO %? \nSCHEDULED: %^T\n%U" :empty-lines 1)))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
