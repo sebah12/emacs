@@ -208,6 +208,16 @@
   (org-journal-dir "~/Dropbox/org/journal/")
   (org-journal-date-format "%A, %Y/%m/%d"))
 
+;; capture templates
+(setq org-capture-templates
+    `(("t" "Tasks / Projects")
+      ("tt" "Task TODO" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
+           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+      ("td" "Task DEADLINE" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
+           "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
+      ("te" "Event" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Events")
+           "* TODO %? \nSCHEDULED:% ^T\n%U" :empty-lines 1)))
+
 (with-eval-after-load 'org
   (org-babel-do-load-languages
       'org-babel-load-languages
