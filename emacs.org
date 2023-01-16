@@ -93,7 +93,9 @@ This section configures basic UI settings that makes Emacs look nicer.
   (global-set-key (kbd "M-i") 'imenu)	     ; bind Imenu to M-i
   (global-set-key (kbd "C-x g") 'magit-status) ; magit
   (global-set-key (kbd "C-c o") #'crux-open-with) ; open with external application
-  
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
 #+end_src
 
 
@@ -103,12 +105,11 @@ This section configures basic UI settings that makes Emacs look nicer.
 
 #+begin_src emacs-lisp
 
-  (load-theme 'material t) ;; load material theme
   ;; Install doom packages
   (use-package doom-themes
-    ;; :init (load-theme 'doom-tokyo-night t)
+    :init (load-theme 'doom-spacegrey t)
     )
-  
+
 #+end_src
 
 ** Modeline

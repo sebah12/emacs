@@ -54,11 +54,13 @@
 (global-set-key (kbd "M-i") 'imenu)	     ; bind Imenu to M-i
 (global-set-key (kbd "C-x g") 'magit-status) ; magit
 (global-set-key (kbd "C-c o") #'crux-open-with) ; open with external application
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
 
-(load-theme 'material t) ;; load material theme
 ;; Install doom packages
 (use-package doom-themes
-  ;; :init (load-theme 'doom-tokyo-night t)
+  :init (load-theme 'doom-spacegrey t)
   )
 
 (use-package all-the-icons
