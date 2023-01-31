@@ -59,7 +59,6 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-cj" 'org-journal-new-entry)
 
-
 ;; Install doom packages
 (use-package doom-themes
   :init (load-theme 'doom-spacegrey t)
@@ -129,6 +128,7 @@
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
 
+
   ;; Agenda log mode
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
@@ -154,6 +154,11 @@
 
 ;; Agenda files
 (setq org-agenda-files '("~/Dropbox/org/agenda/"))
+
+;; org-habits
+(require 'org-habit)
+(add-to-list 'org-modules 'org-habit)
+(setq org-habit-graph-column 60)
 
 ;; TODO dependencies
 ;; (add-hook 'org-mode-hook 'org-enforce-todo-dependencies)
@@ -204,21 +209,32 @@
 
 ;; org-journal
 (use-package org-journal
-:ensure t
-:defer t
-:custom
+  :ensure t
+  :defer t
+  :custom
   (org-journal-dir "~/Dropbox/org/journal/")
   (org-journal-date-format "%A, %Y/%m/%d"))
 
 ;; capture templates
 (setq org-capture-templates
-    `(("t" "Tasks / Projects")
-      ("tt" "Task TODO" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
-           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-      ("td" "Task DEADLINE" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
-           "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
-      ("te" "Event" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Events")
-           "* TODO %? \nSCHEDULED: %^T\n%U" :empty-lines 1)))
+      `(("t" "Tasks / Projects")
+        ("tt" "Task TODO" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
+         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+        ("td" "Task DEADLINE" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Tasks")
+         "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
+        ("te" "Event" entry (file+olp "~/Dropbox/org/agenda/personal.org" "Events")
+         "* TODO %? \nSCHEDULED: %^T\n%U" :empty-lines 1)
+
+        ("s" "SIDE")
+        ("st" "Task" entry (file+olp "~/Dropbox/org/agenda/SIDE.org" "Tasks")
+         "* TODO %?\n  %U" :empty-lines 1)
+        ("sd" "DEADLINE" entry (file+olp "~/Dropbox/org/agenda/SIDE.org" "Tasks")
+         "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
+        ("se" "Schedule" entry (file+olp "~/Dropbox/org/agenda/SIDE.org" "Tasks")
+         "* TODO %? \nSCHEDULED: %^T\n%U" :empty-lines 1)))
+;; Set global key
+(define-key global-map (kbd "C-c k")
+  (lambda () (interactive) (org-capture nil)))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
@@ -243,9 +259,6 @@
     ;; Dynamic scoping to the rescue
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))
-
-;; Set global key
-(define-key global-map (kbd "C-c k") (lambda () (interactive) (org-capture nil)))
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 
@@ -293,6 +306,12 @@
   :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2))
+
+(use-package js2-mode
+  :mode "\\.js\\'"
+  :hook (js2-mode . lsp-deferred)
+  :config
+  (setq javascript-indent-level 2))
 
 (use-package python-mode
   :ensure t

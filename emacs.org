@@ -234,6 +234,11 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
   ;; Agenda files
   (setq org-agenda-files '("~/Dropbox/org/agenda/"))
 
+  ;; org-habits
+  (require 'org-habit)
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60)
+
   ;; TODO dependencies
   ;; (add-hook 'org-mode-hook 'org-enforce-todo-dependencies)
 
@@ -305,7 +310,7 @@ The =efs/org-font-setup= function configures various text faces to tweak the siz
           ("sd" "DEADLINE" entry (file+olp "~/Dropbox/org/agenda/SIDE.org" "Tasks")
            "* TODO %?\nDEADLINE: %^T\n%U" :empty-lines 1)
           ("se" "Schedule" entry (file+olp "~/Dropbox/org/agenda/SIDE.org" "Tasks")
-           "* TODO %? \nSCHEDULED:% ^T\n%U" :empty-lines 1)))
+           "* TODO %? \nSCHEDULED: %^T\n%U" :empty-lines 1)))
   ;; Set global key
   (define-key global-map (kbd "C-c k")
     (lambda () (interactive) (org-capture nil)))
@@ -451,7 +456,7 @@ Is a set of UI enhancements built on top of =lsp-mode= which make Emacs feel eve
 
 #+end_src
 
-*** TypeScript
+*** TypeScript / JavaScript
 
 This is a basic configuration for the TypeScript language so that =.ts= files activate =typescript-mode= when opened.  We're also adding a hook to =typescript-mode-hook= to call =lsp-deferred= so that we activate =lsp-mode= to get LSP features every time we edit TypeScript code.
 
@@ -462,6 +467,16 @@ This is a basic configuration for the TypeScript language so that =.ts= files ac
     :hook (typescript-mode . lsp-deferred)
     :config
     (setq typescript-indent-level 2))
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (use-package js2-mode
+    :mode "\\.js\\'"
+    :hook (js2-mode . lsp-deferred)
+    :config
+    (setq javascript-indent-level 2))
 
 #+end_src
 
