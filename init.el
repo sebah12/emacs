@@ -236,11 +236,30 @@
 (define-key global-map (kbd "C-c k")
   (lambda () (interactive) (org-capture nil)))
 
+;; Tex binaries
+(cond
+   ((string-equal system-type "gnu/linux") 	;Check linux
+    (setq exec-path (append exec-path '("/usr/local/texlive/2022/bin/x86_64-linux")))))
+
+(cond
+   ((string-equal system-type "darwin") 	;Check macOS
+    (setq exec-path (append exec-path '("/Library/Tex/texbin")))))
+
+;; Install auctex package
+(use-package tex
+  :ensure auctex)
+;; Enable auto save and document parsing
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+;; Ask for master file every time a new file is opened
+(setq-default TeX-master nil)
+
 (with-eval-after-load 'org
   (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
-      (python . t)))
+        (python . t)
+        (latex . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes))
 
@@ -250,7 +269,8 @@
 
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python")))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("tex" . "src latex")))
 
 ;; Automatically tangle our Emacs.org config file when we save it
 (defun efs/org-babel-tangle-config ()
