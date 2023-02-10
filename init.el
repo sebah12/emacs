@@ -6,7 +6,6 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
@@ -70,6 +69,8 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
+;; Whether display the environment version.
+(setq doom-modeline-env-version t)
 
 (use-package which-key
   :defer 0
@@ -350,8 +351,8 @@
   (pyvenv-mode 1))
 
 (use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
+  ;; :after lsp-mode
+  ;; :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
          ("<tab>" . company-complete-selection))
         (:map lsp-mode-map

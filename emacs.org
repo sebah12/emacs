@@ -21,7 +21,6 @@ Wil use [[https://github.com/jwiegley/use-package][use-package]] to make it easi
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("melpa-stable" . "https://stable.melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
 
@@ -115,6 +114,10 @@ This section configures basic UI settings that makes Emacs look nicer.
 
 ** Modeline
 [[https://github.com/seagle0128/doom-modeline][doom-modeline]] is a very attractive and rich (yet still minimal) mode line configuration for Emacs.
+To see the icons we need to install [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] package. Once installed we need to install the fonts with
+#+begin_src emacs-lisp :tangle no
+  M-x all-the-icons-install-fonts
+#+end_src
 
 #+begin_src emacs-lisp
 
@@ -124,7 +127,9 @@ This section configures basic UI settings that makes Emacs look nicer.
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 15)))
-  
+  ;; Whether display the environment version.
+  (setq doom-modeline-env-version t)
+
 #+end_src
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is a useful UI panel that appears when you start pressing any key binding in Emacs to offer you all possible completions for the prefix.  For example, if you press =C-c= (hold control and press the letter =c=), a panel will appear at the bottom of the frame displaying all of the bindings under that prefix and which command they run.  This is very useful for learning the possible key bindings in the mode of your current buffer.
@@ -558,7 +563,7 @@ Make sure you have the =pyls= language server installed before trying =lsp-mode=
 
 #+begin_src sh :tangle no
 
-pip install --user "python-language-server[all]"
+pip install --user "python-lsp-server[all]"
 
 #+end_src
 
@@ -600,8 +605,8 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 #+begin_src emacs-lisp
 
   (use-package company
-    :after lsp-mode
-    :hook (lsp-mode . company-mode)
+    ;; :after lsp-mode
+    ;; :hook (lsp-mode . company-mode)
     :bind (:map company-active-map
            ("<tab>" . company-complete-selection))
           (:map lsp-mode-map
@@ -609,7 +614,7 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
     :custom
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.5))
-  
+
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
