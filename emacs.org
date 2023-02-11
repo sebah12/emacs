@@ -221,6 +221,16 @@ To see the icons we need to install [[https://github.com/domtronn/all-the-icons.
     (marginalia-mode))
 #+end_src
 
+**** [[https://elpa.gnu.org/packages/orderless.html][Orderless]]. This package provides an orderless completion style that divides the pattern into space-separated components, and matches candidates that match all of the components in any order.
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
 * Org Mode
 
 [[https://orgmode.org/][Org Mode]] is one of the hallmark features of Emacs.  It is a rich document editor, project planner, task and time tracker, blogging engine, and literate coding utility all wrapped up in one package.
