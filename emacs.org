@@ -200,7 +200,7 @@ To see the icons we need to install [[https://github.com/domtronn/all-the-icons.
     ;; Enable recursive minibuffers
     (setq enable-recursive-minibuffers t))
 
-  
+ 
 #+end_src
 
 **** [[https://elpa.gnu.org/packages/marginalia.html][Marginalia]]. This package provides marginalia-mode which adds marginalia to the minibuffer completions
@@ -229,6 +229,26 @@ To see the icons we need to install [[https://github.com/domtronn/all-the-icons.
     :custom
     (completion-styles '(orderless basic))
     (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+**** [[http://elpa.gnu.org/packages/consult.html][Consult]] provides search and navigation commands based on the Emacs completion function completing-read.
+
+This is a minimal config
+#+begin_src emacs-lisp
+
+  ;; Minimal configuration for Consult
+
+  (use-package consult
+    ;; Replace bindings. Lazily loaded due by `use-package'.
+    :bind (("C-s" . consult-line)
+           ("C-M-l" . consult-imenu)
+           :map minibuffer-local-map
+           ("C-r" . consult-history))
+    ;; Enable automatic preview at point in the *Completions* buffer. This is
+    ;; relevant when you use the default completion UI.
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+    )
+
 #+end_src
 
 * Org Mode
