@@ -224,6 +224,9 @@
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
+  ;; Allow list with alphabetical charaters 'a.', 'A.', 'a)', and 'A)'
+  (setq org-list-allow-alphabetical t)
+
   ;; Center org-mode buffers horizontally
   (defun efs/org-mode-visual-fill ()
     (setq visual-fill-column-width 100
