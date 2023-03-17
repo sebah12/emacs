@@ -50,6 +50,9 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Enable windmove default keybindings
+(windmove-default-keybindings)
+
 (global-set-key (kbd "M-i") 'imenu)	     ; bind Imenu to M-i
 (global-set-key (kbd "C-x g") 'magit-status) ; magit
 (global-set-key (kbd "C-c o") #'crux-open-with) ; open with external application
