@@ -750,6 +750,12 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
     :custom (yas-global-mode 1))
 #+end_src
 
+** Flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+#+end_src
 
 * macOS
 
