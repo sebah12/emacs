@@ -139,9 +139,10 @@ To see the icons we need to install [[https://github.com/domtronn/all-the-icons.
 
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
-    :custom ((doom-modeline-height 15)))
-  ;; Whether display the environment version.
-  (setq doom-modeline-env-version t)
+    :custom 
+    (doom-modeline-height 15)
+    ;; Whether display the environment version.
+    (setq doom-modeline-env-version t))
 
 #+end_src
 
@@ -619,9 +620,9 @@ Is a set of UI enhancements built on top of =lsp-mode= which make Emacs feel eve
 
 **** lsp-helm
 #+begin_src emacs-lisp
-  (use-package helm-lsp
-    :commands helm-lsp-workspace-symbol
-    :after lsp)
+  ;; (use-package helm-lsp
+  ;;   :commands helm-lsp-workspace-symbol
+  ;;   :after lsp)
 #+end_src
 
 *** Debugging with dap-mode
