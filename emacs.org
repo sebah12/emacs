@@ -93,6 +93,11 @@ Enable windmove to switch between windows by pressing S-<left>, S-<right>, S-<up
 
 #+end_src
 
+#+begin_src emacs-lisp
+  ;; Use font 'Kochi Gothic' for Japanese text
+(set-fontset-font "fontset-default" 'han "Kochi Gothic")
+#+end_src
+
 * Key bindings
 
 #+begin_src emacs-lisp
@@ -784,7 +789,7 @@ This library solves this problem by copying important environment variables from
       ;; (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
         ;; (add-to-list 'exec-path-from-shell-variables var))
       (exec-path-from-shell-initialize))
-  
+
 #+end_src
 
 
